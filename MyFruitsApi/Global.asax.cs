@@ -1,3 +1,4 @@
+using SimpleInjector.Integration.WebApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,12 @@ namespace MyFruitsApi
     {
         protected void Application_Start()
         {
+            var container = new SimpleInjector.Container();
+            container.Register<IFruitService, FruitService>(Lifestyle.Scoped);
+            // ... other service registrations
+
+            GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
+
             AreaRegistration.RegisterAllAreas();
             GlobalConfiguration.Configure(WebApiConfig.Register);
             FilterConfig.RegisterGlobalFilters(GlobalFilters.Filters);

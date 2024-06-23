@@ -1,4 +1,5 @@
-﻿using MyFruitsApi.Models;
+﻿using Microsoft.CodeAnalysis;
+using MyFruitsApi.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,5 +14,8 @@ namespace MyFruitsApi.Repositories
         Task AddFruitAsync(Fruit fruit);
         Task UpdateFruitAsync(Fruit fruit);
         Task DeleteFruitAsync(string name);
+        Task AddMetadataToFruitAsync(string fruitName, Metadata metadata);
+        Task UpdateMetadataForFruitAsync(string fruitName, Metadata metadata);
+        Task RemoveMetadataFromFruitAsync(string fruitName, string metadataKey);
     }
 }
