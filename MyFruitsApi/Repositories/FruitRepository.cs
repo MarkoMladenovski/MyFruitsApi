@@ -2,6 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+//It can be done withaout repository pattern, because Entity Framework is being used and only in certan situations can be used.
+
+//https://softwareengineering.stackexchange.com/questions/180851/why-shouldnt-i-use-the-repository-pattern-with-entity-framework, if its needed, here is tha explanation why
+
 
 public class FruitRepository
 {
@@ -9,7 +13,7 @@ public class FruitRepository
 
     public FruitRepository()
     { 
-        _fruits = LoadFruitsFromFile();
+        _fruits = LoadFruits();
     }
 
     public Task<Fruit> GetFruitByName(string name)
@@ -65,7 +69,7 @@ public class FruitRepository
         throw new NotImplementedException();
     }
 
-    private List<Fruit> LoadFruitsFromFile()
+    private List<Fruit> LoadFruits()
     {
         var fruits = new List<Fruit>
         {

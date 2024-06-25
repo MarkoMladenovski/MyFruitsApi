@@ -1,6 +1,6 @@
 ﻿namespace FruitInfoApp
 {
-    internal class NutritionFact
+    internal class FruiMetadata
     {
     }
 }

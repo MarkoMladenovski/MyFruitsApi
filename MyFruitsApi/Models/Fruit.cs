@@ -9,9 +9,8 @@ public class Fruit
     public string Genus { get; set; }
     public string Nutritions { get; set; }
     public List<FruitMetadata> Metadata { get; set; } = new List<FruitMetadata>();
+    public object NutritionFacts { get; internal set; }
 }
-
-// FruitMetadata.cs
 public class FruitMetadata
 {
     public int Id { get; set; }

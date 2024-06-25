@@ -1,7 +1,11 @@
+using FruitInfoApp;
+using MyFruitsApi.Repositories;
+using SimpleInjector;
 using SimpleInjector.Integration.WebApi;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Web;
 using System.Web.Http;
 using System.Web.Mvc;
@@ -14,9 +18,15 @@ namespace MyFruitsApi
     {
         protected void Application_Start()
         {
-            var container = new SimpleInjector.Container();
+            //var container = new SimpleInjector.Container();
+            //container.Register<IFruitService, FruitService>(Lifestyle.Scoped);
+            var container = new Container();
+            container.Register<HttpClient>(() => new HttpClient(), Lifestyle.Scoped);
+
+            container.Register<IFruitRepository, FruitRepository>(Lifestyle.Scoped);
             container.Register<IFruitService, FruitService>(Lifestyle.Scoped);
-            // ... other service registrations
+            container.Register<FruitDbContext>(Lifestyle.Scoped);
+
 
             GlobalConfiguration.Configuration.DependencyResolver = new SimpleInjectorWebApiDependencyResolver(container);
 

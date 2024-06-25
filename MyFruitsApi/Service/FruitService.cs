@@ -1,19 +1,20 @@
-﻿// FruitService.cs
+﻿using MyFruitsApi.Repositories;
+using MyFruitsApi.Service;
 using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
-public class FruitService
+public class FruitService : IFruitService
 {
     private readonly HttpClient _httpClient;
     private readonly FruitRepository _fruitRepository;
 
-    public FruitService(HttpClient httpClient, FruitRepository fruitRepository)
+    public FruitService(HttpClient httpClient, IFruitRepository fruitRepository)
     {
         _httpClient = httpClient;
-        _fruitRepository = fruitRepository;
+        _fruitRepository = (FruitRepository)fruitRepository;
     }
 
     public async Task<Fruit> GetFruitByName(string name)
@@ -21,13 +22,17 @@ public class FruitService
         var response = await _httpClient.GetAsync($"https://www.fruityvice.com/api/fruit/{name}");
         if (response.IsSuccessStatusCode)
         {
-            var fruitJson = await response.Content.ReadAsStringAsync();
-            var fruit = JsonSerializer.Deserialize<Fruit>(fruitJson);
-            return fruit;
+            var cachedFruit = await _fruitRepository.GetFruitByNameAsync(name);
+            if (cachedFruit != null)
+            {
+                return cachedFruit;
+            }
+            //var fruitJson = await response.Content.ReadAsStringAsync();
+            //var fruit = JsonSerializer.Deserialize<Fruit>(fruitJson);
+            //return fruit;
         }
         else
         {
-            // Handle error based on status code, e.g., 404 (Not Found)
             if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
             {
                 throw new Exception($"Fruit '{name}' not found.");
@@ -41,7 +46,6 @@ public class FruitService
 
     public async Task<Fruit> AddMetadata(int fruitId, string key, string value)
     {
-        // Implement logic to add metadata to the database or cache.
         var fruit = await _fruitRepository.GetFruitById(fruitId);
         if (fruit == null)
         {
@@ -56,7 +60,6 @@ public class FruitService
 
     public async Task<Fruit> RemoveMetadata(int fruitId, string key)
     {
-        // Implement logic to remove metadata from the database or cache.
         var fruit = await _fruitRepository.GetFruitById(fruitId);
         if (fruit == null)
         {
@@ -74,7 +77,7 @@ public class FruitService
 
     public async Task<Fruit> UpdateMetadata(int fruitId, string key, string newValue)
     {
-        // Implement logic to update metadata in the database or cache.
+        
         var fruit = await _fruitRepository.GetFruitById(fruitId);
         if (fruit == null)
         {

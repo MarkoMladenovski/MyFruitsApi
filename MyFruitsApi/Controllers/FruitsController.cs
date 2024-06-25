@@ -1,6 +1,8 @@
 ﻿using System.Web.Http;
 using System.Threading.Tasks;
 using System;
+using System.Collections.Generic;
+
 
 public class FruitController : ApiController
 {
@@ -21,8 +23,13 @@ public class FruitController : ApiController
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return InternalServerError(ex.Message);
         }
+    }
+
+    private IHttpActionResult InternalServerError(string message)
+    {
+        throw new NotImplementedException();
     }
 
     [HttpPost]
@@ -35,7 +42,7 @@ public class FruitController : ApiController
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return InternalServerError(ex.Message);
         }
     }
 
@@ -49,7 +56,7 @@ public class FruitController : ApiController
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return InternalServerError(ex.Message);
         }
     }
 
@@ -63,7 +70,9 @@ public class FruitController : ApiController
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return InternalServerError(ex.Message);
         }
     }
 }
+
+//The HTTTPClient you can put it in another wrapper for the client and enter data as a parameter and that the url as an app config variable, or on the cloud
